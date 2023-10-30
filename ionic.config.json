@@ -1,0 +1,8 @@
+{
+  "name": "React Weather Dashboard",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "99d00ba8"
+}
