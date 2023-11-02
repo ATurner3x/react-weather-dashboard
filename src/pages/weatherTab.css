@@ -1,0 +1,11 @@
+
+.weather-header {
+    background-color: #3498db; /* Change the background color */
+    color: #e82d2d; /* Change the text color */
+  }
+  
+  /* Style the weather data container */
+  .weather-data-container {
+    padding: 20px;
+  }
+  

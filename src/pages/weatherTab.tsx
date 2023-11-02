@@ -12,6 +12,8 @@ import {
 } from '@ionic/react';
 
 import { sunny } from 'ionicons/icons'; // Import icon here
+import './weatherTab.css'; //import css here
+import axios from 'axios';
 
 const WeatherTab: React.FC = () => {
   // Weather Fetching Logic
@@ -28,14 +30,14 @@ const WeatherTab: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="weather-header">
         <IonToolbar>
           <IonTitle>Weather Dashboard</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
         {/* Display weather data here */}
-        <IonList>
+        <IonList className="weather-data-container">
           <IonItem>
             <IonIcon slot="start" icon={sunny} />
             <IonLabel>Temperature: XX°C</IonLabel>
