@@ -16,17 +16,30 @@ import './weatherTab.css'; //import css here
 import axios from 'axios';
 
 const WeatherTab: React.FC = () => {
+
   // Weather Fetching Logic
 
+  const [weatherData, setWeatherData] = useState<any | null>(null);
 
+  useEffect(() => {
+   
+   
+    // API key for OpenWeatherMap goes here
+    const apiKey = '8c1bc17647319a23fbee25bc0228efe2';
+    const city = 'Detroit'; // Replace with your desired city
 
+    // Make an API request to OpenWeatherMap
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
-
-
-
-
-
-
+    axios
+      .get(apiUrl)
+      .then((response) => {
+        setWeatherData(response.data);
+      })
+      .catch((error) => {
+        console.error('Error fetching weather data', error);
+      });
+  }, []);
 
   return (
     <IonPage>
