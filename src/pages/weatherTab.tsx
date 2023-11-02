@@ -41,6 +41,11 @@ const WeatherTab: React.FC = () => {
       });
   }, []);
 
+   // Function to convert Kelvin to Fahrenheit
+   const kelvinToFahrenheit = (kelvin: number) => {
+    return (kelvin - 273.15) * 9/5 + 32; // Conversion formula
+  };
+
   return (
     <IonPage>
       <IonHeader className="weather-header">
@@ -51,10 +56,15 @@ const WeatherTab: React.FC = () => {
       <IonContent>
         {/* Display weather data here */}
         <IonList className="weather-data-container">
-          <IonItem>
-            <IonIcon slot="start" icon={sunny} />
-            <IonLabel>Temperature: XX°C</IonLabel>
-          </IonItem>
+        <IonItem>
+  <IonIcon slot="start" icon={sunny} />
+  <IonLabel>
+    {weatherData && weatherData.main
+      ? `Temperature: ${kelvinToFahrenheit(weatherData.main.temp).toFixed(2)}°F`
+      : 'Loading...'
+    }
+  </IonLabel>
+</IonItem>
           {/* Add more weather information items */}
         </IonList>
       </IonContent>
