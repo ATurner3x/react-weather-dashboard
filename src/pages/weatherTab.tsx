@@ -90,11 +90,12 @@ const WeatherTab: React.FC = () => {
 
         {/* Location Selection */}
         <IonList className="location-selection">
-          <IonSearchbar
-            value={searchText}
-            onIonChange={(e) => handleSearchBarInput(e)}
-            placeholder="Enter city name"
-          />
+        <IonSearchbar
+  value={searchText}
+  onIonChange={(e) => handleSearchBarInput(e)}
+  placeholder="Enter city name"
+  debounce={500} // Adjust the delay as needed (in milliseconds)
+/>
           <IonItem>
             <IonButton expand="full" onClick={handleSearch}>
               Search
