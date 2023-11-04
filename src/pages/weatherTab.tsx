@@ -17,7 +17,8 @@ import {
   IonSegmentButton,
 } from '@ionic/react';
 
-import { sunny } from 'ionicons/icons'; // Import icon here
+import { CustomEventDetail } from '@ionic/core';
+import { sunny , rainy , speedometer , cloud } from 'ionicons/icons'; // Import icon here
 import './weatherTab.css'; //import css here
 import axios from 'axios';
 
@@ -27,6 +28,10 @@ const WeatherTab: React.FC = () => {
   const [weatherData, setWeatherData] = useState<any | null>(null);
   const [searchText, setSearchText] = useState('');
   const [temperatureUnit, setTemperatureUnit] = useState('Fahrenheit'); //
+  const [humidity, setHumidity] = useState<number | null>(null);
+  const [windSpeed, setWindSpeed] = useState<number | null>(null);
+  const [weatherCondition, setWeatherCondition] = useState<string | null>('');
+
 
 
   // An array to store autocomplete suggestions
@@ -41,12 +46,17 @@ const WeatherTab: React.FC = () => {
                                                                                         // const city = 'detroit'; // Replace with your desired city
 
     // Make an API request to OpenWeatherMap
-    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}`;
+
 
     axios
       .get(apiUrl)
       .then((response) => {
         setWeatherData(response.data);
+        // Extract additional weather information from API
+      setHumidity(response.data.main.humidity);
+      setWindSpeed(response.data.wind.speed);
+      setWeatherCondition(response.data.weather[0].description);
       })
       .catch((error) => {
         console.error('Error fetching weather data', error);
@@ -130,7 +140,7 @@ const fahrenheitToCelsius = (fahrenheit: number) => {
           </IonItem>
         </IonList>
 
-        {/* Step 3: Display the Selected Unit and Allow User Switching */}
+        {/* Display the Selected Unit and Allow User Switching */}
   <IonSegment
     value={temperatureUnit}
     onIonChange={(e) => setTemperatureUnit(e.detail.value)}
@@ -173,6 +183,24 @@ const fahrenheitToCelsius = (fahrenheit: number) => {
 </IonItem>
 
           {/* Add more weather information items */}
+          <IonItem>
+      <IonIcon slot="start" icon={cloud} />
+      <IonLabel>
+        {humidity !== null ? `Humidity: ${humidity}%` : 'Loading...'}
+      </IonLabel>
+    </IonItem>
+    <IonItem>
+      <IonIcon slot="start" icon={speedometer} />
+      <IonLabel>
+        {windSpeed !== null ? `Wind Speed: ${windSpeed} m/s` : 'Loading...'}
+      </IonLabel>
+    </IonItem>
+    <IonItem>
+      <IonIcon slot="start" icon={rainy} />
+      <IonLabel>
+        {weatherCondition ? `Weather Condition: ${weatherCondition}` : 'Loading...'}
+      </IonLabel>
+    </IonItem>
           
         </IonList>
       </IonContent>
