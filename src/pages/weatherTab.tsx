@@ -55,11 +55,11 @@ const getUserLocation = () => {
 
   // Weather Fetching Logic
   useEffect(() => {
-
+    if (currentLocation) {
+    const { latitude, longitude } = currentLocation.coords;
     // API key for OpenWeatherMap goes here
     const apiKey = '8c1bc17647319a23fbee25bc0228efe2';
                                                                                         // const city = 'detroit'; // Replace with your desired city
-
     // Make an API request to OpenWeatherMap
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${apiKey}`;
 
@@ -72,11 +72,15 @@ const getUserLocation = () => {
       setHumidity(response.data.main.humidity);
       setWindSpeed(response.data.wind.speed);
       setWeatherCondition(response.data.weather[0].description);
+              // Update the city name
+              setCity(response.data.name);
+
       })
       .catch((error) => {
         console.error('Error fetching weather data', error);
       });
-    }, [city]);
+    }
+  }, [currentLocation]);
 
    // Function to convert Kelvin to Fahrenheit
    const kelvinToFahrenheit = (kelvin: number) => {
