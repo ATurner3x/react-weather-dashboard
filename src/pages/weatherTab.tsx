@@ -127,6 +127,16 @@ const fahrenheitToCelsius = (fahrenheit: number) => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+      
+      
+      {/* Get Geolocation Button*/}
+      <IonButton
+      expand="full"
+       onClick={getUserLocation}>
+        
+        Get My Location
+
+      </IonButton>
 
     {/* Location Selection */}
         <IonList className="location-selection">
