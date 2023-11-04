@@ -31,16 +31,31 @@ const WeatherTab: React.FC = () => {
   const [humidity, setHumidity] = useState<number | null>(null);
   const [windSpeed, setWindSpeed] = useState<number | null>(null);
   const [weatherCondition, setWeatherCondition] = useState<string | null>('');
+  const [currentLocation, setCurrentLocation] = useState<GeolocationPosition | null>(null);
 
 
+// Geolocation function
+const getUserLocation = () => {
+  if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setCurrentLocation(position);
+      },
+      (error) => {
+        console.error("Error getting user location:", error);
+      }
+    );
+  } else {
+    console.error("Geolocation is not available in this browser.");
+  }
+};
 
   // An array to store autocomplete suggestions
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-
   // Weather Fetching Logic
   useEffect(() => {
-   
+
     // API key for OpenWeatherMap goes here
     const apiKey = '8c1bc17647319a23fbee25bc0228efe2';
                                                                                         // const city = 'detroit'; // Replace with your desired city
