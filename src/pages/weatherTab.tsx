@@ -13,6 +13,8 @@ import {
   IonSearchbar,
   IonButton, 
   IonInput,
+  IonSegment,
+  IonSegmentButton,
 } from '@ionic/react';
 
 import { sunny } from 'ionicons/icons'; // Import icon here
@@ -24,6 +26,8 @@ const WeatherTab: React.FC = () => {
   const [city, setCity] = useState(''); // Set Default city here
   const [weatherData, setWeatherData] = useState<any | null>(null);
   const [searchText, setSearchText] = useState('');
+  const [temperatureUnit, setTemperatureUnit] = useState('Fahrenheit'); //
+
 
   // An array to store autocomplete suggestions
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -53,6 +57,17 @@ const WeatherTab: React.FC = () => {
    const kelvinToFahrenheit = (kelvin: number) => {
     return (kelvin - 273.15) * 9/5 + 32; // Conversion formula
   };
+
+  // Function to convert Celsius to Fahrenheit
+const celsiusToFahrenheit = (celsius: number) => {
+  return (celsius * 9/5) + 32; // Conversion formula
+};
+
+// Function to convert Fahrenheit to Celsius
+const fahrenheitToCelsius = (fahrenheit: number) => {
+  return (fahrenheit - 32) * 5/9; // Conversion formula
+};
+
 
    // Function to handle the search button click
    const handleSearch = () => {
@@ -88,13 +103,14 @@ const WeatherTab: React.FC = () => {
       </IonHeader>
       <IonContent>
 
-        {/* Location Selection */}
+    {/* Location Selection */}
         <IonList className="location-selection">
         <IonSearchbar
-  value={searchText}
-  onIonChange={(e) => handleSearchBarInput(e)}
-  placeholder="Enter city name"
-  debounce={500} // Adjust the delay as needed (in milliseconds)
+        value={searchText}
+        onIonChange={(e) => handleSearchBarInput(e)}
+        placeholder="Enter city name"
+        debounce={500} // Adjust the delay as needed (in milliseconds)
+        
 />
           <IonItem>
             <IonButton expand="full" onClick={handleSearch}>
@@ -114,6 +130,21 @@ const WeatherTab: React.FC = () => {
           </IonItem>
         </IonList>
 
+        {/* Step 3: Display the Selected Unit and Allow User Switching */}
+  <IonSegment
+    value={temperatureUnit}
+    onIonChange={(e) => setTemperatureUnit(e.detail.value)}
+  >
+    <IonSegmentButton value="Fahrenheit">
+      Fahrenheit
+    </IonSegmentButton>
+    <IonSegmentButton value="Celsius">
+      Celsius
+    </IonSegmentButton>
+  </IonSegment>
+
+  
+
         {/* Autocomplete Suggestions */}
         {suggestions.length > 0 && (
           <IonList className="autocomplete-suggestions">
@@ -124,16 +155,20 @@ const WeatherTab: React.FC = () => {
             ))}
           </IonList>
         )}
+
+        
         
         {/* Display weather data here */}
         <IonList className="weather-data-container">
         <IonItem>
   <IonIcon slot="start" icon={sunny} />
   <IonLabel>
-    {weatherData && weatherData.main
-      ? `Temperature: ${kelvinToFahrenheit(weatherData.main.temp).toFixed(2)}°F`
-      : 'Loading...'
-    }
+  {weatherData && weatherData.main
+    ? `Temperature: ${temperatureUnit === 'Fahrenheit'
+        ? kelvinToFahrenheit(weatherData.main.temp).toFixed(2) + '°F'
+        : fahrenheitToCelsius(kelvinToFahrenheit(weatherData.main.temp)).toFixed(2) + '°C'}`
+    : 'Loading...'
+  }
   </IonLabel>
 </IonItem>
 
