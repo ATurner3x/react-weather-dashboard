@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  IonButton, 
-  IonInput,
+  
   IonContent,
   IonHeader,
   IonPage,
@@ -11,6 +10,9 @@ import {
   IonList,
   IonItem,
   IonIcon,
+  IonSearchbar,
+  IonButton, 
+  IonInput,
 } from '@ionic/react';
 
 import { sunny } from 'ionicons/icons'; // Import icon here
@@ -21,6 +23,11 @@ const WeatherTab: React.FC = () => {
 
   const [city, setCity] = useState(''); // Set Default city here
   const [weatherData, setWeatherData] = useState<any | null>(null);
+  const [searchText, setSearchText] = useState('');
+
+  // An array to store autocomplete suggestions
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+
 
   // Weather Fetching Logic
   useEffect(() => {
@@ -53,7 +60,25 @@ const WeatherTab: React.FC = () => {
     // The useEffect hook will fetch the new data
   };
 
+  // Function to handle the search bar input and update autocomplete suggestions
+  const handleSearchBarInput = (e: CustomEvent) => {
+    const inputText = e.detail.value;
+
+    // Update the search text state
+    setSearchText(inputText);
+
+    //Placeholder for autocomplete suggestions , Implement cities API here
+    const basicCities = ['Detroit', 'New York', 'Los Angeles', 'Chicago', 'Miami', 'San Francisco', 'Seattle'];
+    const filteredSuggestions = basicCities.filter((city) =>
+      city.toLowerCase().includes(inputText.toLowerCase())
+    );
+
+    // Update the suggestions state with the filtered suggestions
+    setSuggestions(filteredSuggestions);
+  };
+
   return (
+
     <IonPage>
       <IonHeader className="weather-header">
         <IonToolbar>
@@ -61,22 +86,32 @@ const WeatherTab: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+
         {/* Location Selection */}
         <IonList className="location-selection">
-          <IonItem>
-            <IonInput
-              type="text"
-              placeholder="Enter city name"
-              value={city}
-              onIonChange={(e) => setCity(e.detail.value!)}
-            ></IonInput>
-          </IonItem>
+          <IonSearchbar
+            value={searchText}
+            onIonChange={(e) => handleSearchBarInput(e)}
+            placeholder="Enter city name"
+          />
           <IonItem>
             <IonButton expand="full" onClick={handleSearch}>
               Search
             </IonButton>
           </IonItem>
         </IonList>
+
+        {/* Autocomplete Suggestions */}
+        {suggestions.length > 0 && (
+          <IonList className="autocomplete-suggestions">
+            {suggestions.map((suggestion, index) => (
+              <IonItem key={index} button onClick={() => setCity(suggestion)}>
+                {suggestion}
+              </IonItem>
+            ))}
+          </IonList>
+        )}
+        
         {/* Display weather data here */}
         <IonList className="weather-data-container">
         <IonItem>
