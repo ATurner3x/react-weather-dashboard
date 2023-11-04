@@ -58,6 +58,7 @@ const WeatherTab: React.FC = () => {
    const handleSearch = () => {
     // Update the weather data for the selected city
     // The useEffect hook will fetch the new data
+    setSearchText(''); // Clear the input field
   };
 
   // Function to handle the search bar input and update autocomplete suggestions
@@ -98,6 +99,17 @@ const WeatherTab: React.FC = () => {
             <IonButton expand="full" onClick={handleSearch}>
               Search
             </IonButton>
+             <IonButton
+      expand="full"
+      fill="clear"
+      onClick={() => {
+        // Clear the input field and reset to the default city
+        setSearchText('');
+        setCity('Detroit'); // Replace Detroit with geo location info
+      }}
+    >
+      Clear Input
+    </IonButton>
           </IonItem>
         </IonList>
 
